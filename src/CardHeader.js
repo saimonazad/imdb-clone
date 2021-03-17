@@ -7,7 +7,7 @@ const CardHeader = ({ movies }) => {
     .map(({ title, time, url, image }) => {
       return (
         <React.Fragment>
-          <div className="flex flex-row p-3 shadow  ">
+          <div className="flex flex-row p-3 shadow bg-gray-900 ">
             <div className="">
               <img src={image} width="85" />
             </div>
@@ -41,7 +41,13 @@ const CardHeader = ({ movies }) => {
       );
     });
 
-  return <>{renderedItem}</>;
+  return (
+    <div className="relative ml-3">
+      <h1 className="text-yellow-500 text-2xl  ">Up Next</h1>
+      {renderedItem}
+      <h1 className="text-white text-2xl  ">Browse Trailers</h1>
+    </div>
+  );
 };
 
 export default CardHeader;

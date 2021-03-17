@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Header.css";
-import ListHeader from "./ListHeader";
+
+import CardHeader from "./CardHeader";
 
 const headerListMovies = [
   {
@@ -58,9 +59,47 @@ const headerListMovies = [
       "https://m.media-amazon.com/images/M/MV5BZGRhMDVhYWQtZjExNi00ZDEzLWI4ZDItNGIzYWE1Y2Q4MDNiXkEyXkFqcGdeQWpnYW1i._V1_QL75_UX1000_CR0,0,1000,563_.jpg",
   },
 ];
+const useConstructor = (callBack = () => {}) => {
+  const [hasBeenCalled, setHasBeenCalled] = useState(false);
+  if (hasBeenCalled) return;
+  callBack();
+  setHasBeenCalled(true);
+};
 
 const Header = () => {
   const [activeSlideIndex, setactiveSlideIndex] = useState(0);
+  const [nextMovies, setnextMovies] = useState([]);
+
+  const movies = () => {
+    let newLists = [];
+
+    headerListMovies
+      .slice(activeSlideIndex + 1, activeSlideIndex + 4)
+      .map((item) => {
+        newLists.push(item);
+      });
+    if (newLists.length >= 2 && newLists.length < 4) {
+      newLists.push(headerListMovies[0]);
+    } else if (newLists.length < 3) {
+      newLists.push(headerListMovies[0]);
+      newLists.push(headerListMovies[1]);
+    }
+    setnextMovies(newLists);
+  };
+  useConstructor(() => {
+    movies();
+  });
+
+  useEffect(() => {
+    console.log(activeSlideIndex);
+    console.log(nextMovies);
+    if (activeSlideIndex == headerListMovies.length - 1) {
+      setactiveSlideIndex(0);
+      movies();
+    } else {
+      movies();
+    }
+  }, [activeSlideIndex]);
 
   const onClickHandler = (type) => {
     const numberOfSlides = headerListMovies.length;
@@ -82,12 +121,12 @@ const Header = () => {
         } else if (currentSlideIndex === numberOfSlides - 1) {
           currentSlideIndex = -1;
           nextSlideIndex = currentSlideIndex + 1;
+          console.log("next " + nextSlideIndex);
         }
     }
     if (nextSlideIndex !== undefined) {
       setactiveSlideIndex(nextSlideIndex);
     }
-    console.log(activeSlideIndex);
   };
 
   return (
@@ -145,9 +184,7 @@ const Header = () => {
                             {headerListMovies[activeSlideIndex].time}
                           </span>
                         </div>
-                        <p className="text-white px-4">
-                          Watch The Trailer!
-                        </p>
+                        <p className="text-white px-4">Watch The Trailer!</p>
                       </div>
                     </div>
                   </div>
@@ -193,7 +230,7 @@ const Header = () => {
             </div>
           </div>
           <div className="flex-auto w-4/12">
-            <ListHeader movies={headerListMovies} />
+            <CardHeader movies={nextMovies} currentIndex={activeSlideIndex} />
           </div>
         </div>
       </div>

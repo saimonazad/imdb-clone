@@ -5,6 +5,7 @@ import CardHeader from "./CardHeader";
 
 const headerListMovies = [
   {
+    id: 1,
     title: "'Zack Snyder's Justice League'",
     time: "2:19",
     image:
@@ -14,6 +15,7 @@ const headerListMovies = [
       "https://m.media-amazon.com/images/M/MV5BMzc5Zjc2YTMtM2IwZC00OTAyLThjZTktNGU3MjVjNTY5YThlXkEyXkFqcGdeQXNuZXNodQ@@._V1_QL75_UX1000_CR0,0,1000,563_.jpg",
   },
   {
+    id: 2,
     title: "The Falcon and the Winter Soldier",
     time: "1:19",
     image:
@@ -23,6 +25,7 @@ const headerListMovies = [
       "https://m.media-amazon.com/images/M/MV5BOGQ4NmEwZDMtNWNjNy00Mjc4LThmZTMtYmIxYjU3ZmEyMWY5XkEyXkFqcGdeQW1hcmNtYW5u._V1_QL75_UX1000_CR0,0,1000,563_.jpg",
   },
   {
+    id: 3,
     title: "The Rise of Henry Cavill",
     time: "4:03",
     image:
@@ -32,6 +35,7 @@ const headerListMovies = [
       "https://m.media-amazon.com/images/M/MV5BNjhjZWU5OTgtYzg5ZC00MjUyLTk3ZTItMjUzYmEzYWMyYjU5XkEyXkFqcGdeQXNoYW5nZWxs._V1_QL75_UX1000_CR0,0,1000,563_.jpg",
   },
   {
+    id: 4,
     title: "In the Heights",
     time: "2:24",
     image:
@@ -41,6 +45,7 @@ const headerListMovies = [
       "https://m.media-amazon.com/images/M/MV5BOGZhNjcxM2ItODRlZC00ODhkLWJlMjgtYzcyMWMxYzI0NTkyXkEyXkFqcGdeQXNuZXNodQ@@._V1_QL75_UX1000_CR0,6,1000,563_.jpg",
   },
   {
+    id: 5,
     title: "From 'Suicide Squad' to 'Ma Rainey's Black Bottom'",
     time: "2:40",
     image:
@@ -50,6 +55,7 @@ const headerListMovies = [
       "https://m.media-amazon.com/images/M/MV5BNjVlYTIzMGQtYTcyZS00NTI3LTg3YTktOTFjZjY1ZGZkZDJhXkEyXkFqcGdeQW1pYnJ5YW50._V1_QL75_UX1000_CR0,0,1000,563_.jpg",
   },
   {
+    id: 6,
     title: "'Cruella'",
     time: "1:01",
     image:
@@ -72,7 +78,6 @@ const Header = () => {
 
   const movies = () => {
     let newLists = [];
-
     headerListMovies
       .slice(activeSlideIndex + 1, activeSlideIndex + 4)
       .map((item) => {
@@ -83,6 +88,7 @@ const Header = () => {
     } else if (newLists.length < 3) {
       newLists.push(headerListMovies[0]);
       newLists.push(headerListMovies[1]);
+      newLists.push(headerListMovies[2]);
     }
     setnextMovies(newLists);
   };
@@ -91,9 +97,7 @@ const Header = () => {
   });
 
   useEffect(() => {
-    console.log(activeSlideIndex);
-    console.log(nextMovies);
-    if (activeSlideIndex == headerListMovies.length - 1) {
+    if (activeSlideIndex == headerListMovies.length) {
       setactiveSlideIndex(0);
       movies();
     } else {
@@ -104,29 +108,24 @@ const Header = () => {
   const onClickHandler = (type) => {
     const numberOfSlides = headerListMovies.length;
     let currentSlideIndex = activeSlideIndex;
-    let nextSlideIndex = undefined;
     switch (type) {
       case "prev":
-        nextSlideIndex = currentSlideIndex;
         if (currentSlideIndex > 0) {
-          nextSlideIndex = currentSlideIndex - 1;
+          currentSlideIndex--;
         } else {
-          nextSlideIndex = numberOfSlides - 1;
+          currentSlideIndex = numberOfSlides - 1;
+          console.log(currentSlideIndex);
         }
         break;
       case "next":
-        nextSlideIndex = currentSlideIndex;
-        if (currentSlideIndex < numberOfSlides - 1) {
-          nextSlideIndex = currentSlideIndex + 1;
-        } else if (currentSlideIndex === numberOfSlides - 1) {
-          currentSlideIndex = -1;
-          nextSlideIndex = currentSlideIndex + 1;
-          console.log("next " + nextSlideIndex);
+        if (currentSlideIndex >= 0 && currentSlideIndex < numberOfSlides - 1) {
+          currentSlideIndex++;
+        } else {
+          currentSlideIndex = 0;
         }
     }
-    if (nextSlideIndex !== undefined) {
-      setactiveSlideIndex(nextSlideIndex);
-    }
+
+    setactiveSlideIndex(currentSlideIndex);
   };
 
   return (

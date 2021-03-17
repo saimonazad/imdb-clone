@@ -4,10 +4,13 @@ const CardHeader = ({ movies }) => {
   let size = 3;
   const renderedItem = movies
     .slice(0, size)
-    .map(({ title, time, url, image }) => {
+    .map(({ title, time, url, image, id },index) => {
       return (
         <React.Fragment>
-          <div className="flex flex-row p-3 shadow bg-gray-900 ">
+          <div
+            className="flex flex-row p-3"
+            style={{ backgroundColor: index === 0 ? "#141414" : "none" }}
+          >
             <div className="">
               <img src={image} width="85" />
             </div>

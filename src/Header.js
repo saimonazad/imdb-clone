@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 
 import CardHeader from "./CardHeader";
+import useInterval from "./useInterval";
 
 const headerListMovies = [
   {
@@ -65,6 +66,7 @@ const headerListMovies = [
       "https://m.media-amazon.com/images/M/MV5BZGRhMDVhYWQtZjExNi00ZDEzLWI4ZDItNGIzYWE1Y2Q4MDNiXkEyXkFqcGdeQWpnYW1i._V1_QL75_UX1000_CR0,0,1000,563_.jpg",
   },
 ];
+
 const useConstructor = (callBack = () => {}) => {
   const [hasBeenCalled, setHasBeenCalled] = useState(false);
   if (hasBeenCalled) return;
@@ -75,6 +77,20 @@ const useConstructor = (callBack = () => {}) => {
 const Header = () => {
   const [activeSlideIndex, setactiveSlideIndex] = useState(0);
   const [nextMovies, setnextMovies] = useState([]);
+  const [autoCarousel, setautoCarousel] = useState(true);
+
+  let autoRotateCount = 0;
+
+  function handleIntervalCarousel() {
+    if (autoRotateCount > headerListMovies.length - 2) {
+      autoRotateCount = 0;
+      autoRotateCount++;
+    } else {
+      autoRotateCount++;
+    }
+    setactiveSlideIndex(autoRotateCount);
+  }
+  const stopIntervalCarousel = useInterval(handleIntervalCarousel, 5000);
 
   const movies = () => {
     let newLists = [];
@@ -124,7 +140,10 @@ const Header = () => {
           currentSlideIndex = 0;
         }
     }
-
+    if (autoCarousel == true) {
+      stopIntervalCarousel();
+      setautoCarousel(false);
+    }
     setactiveSlideIndex(currentSlideIndex);
   };
 

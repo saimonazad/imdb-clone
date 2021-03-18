@@ -6,7 +6,7 @@ const CardHeader = ({ movies }) => {
     .slice(0, size)
     .map(({ title, time, url, image, id },index) => {
       return (
-        <React.Fragment>
+        <React.Fragment key={id}>
           <div
             className="flex flex-row p-3"
             style={{ backgroundColor: index === 0 ? "#141414" : "none" }}
